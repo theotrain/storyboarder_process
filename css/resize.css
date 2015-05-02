@@ -1,0 +1,81 @@
+.ui-resizable-handle {
+  position: absolute;
+  font-size: 0.1px;
+  display: block;
+}
+.ui-resizable-disabled .ui-resizable-handle,
+.ui-resizable-autohide .ui-resizable-handle {
+  display: none;
+}
+.ui-resizable-n {
+  cursor: n-resize;
+  height: 12px;
+  width: 100%;
+  top: 0px;
+  left: 0;
+  background: url("../images/resize-handle.gif") top center no-repeat;
+  /*border-top: 1px solid #00a0fb;*/
+}
+.ui-resizable-s {
+  cursor: s-resize;
+  height: 12px;
+  width: 100%;
+  bottom: 0px;
+  left: 0;
+  background: url("../images/resize-handle.gif") bottom center no-repeat;
+  /*border-bottom: 1px solid #00a0fb;*/
+}
+.ui-resizable-e {
+  cursor: e-resize;
+  width: 12px;
+  right: 0px;
+  top: 0;
+  height: 100%;
+  background: url("../images/resize-handle.gif") right center no-repeat;
+  /*border-right: 1px solid #00a0fb;*/
+}
+.ui-resizable-w {
+  cursor: w-resize;
+  width: 12px;
+  left: 0px;
+  top: 0;
+  height: 100%;
+  background: url("../images/resize-handle.gif") left center no-repeat;
+  /*border-left: 1px solid #00a0fb;*/
+}
+.ui-resizable-se {
+  cursor: se-resize;
+  width: 12px;
+  height: 12px;
+  right: 1px;
+  bottom: 1px;
+  background: url("../images/resize-handle.gif") bottom right no-repeat;
+  /*border-top: 1px solid #00a0fb;*/
+}
+.ui-resizable-sw {
+  cursor: sw-resize;
+  width: 12px;
+  height: 12px;
+  left: 1px;
+  bottom: 1px;
+  background: url("../images/resize-handle.gif") bottom left no-repeat;
+  /*border-top: 1px solid #00a0fb;*/
+}
+.ui-resizable-nw {
+  cursor: nw-resize;
+  width: 12px;
+  height: 12px;
+  left: 1px;
+  top: 1px;
+  background: url("../images/resize-handle.gif") top left no-repeat;
+  /*border-top: 1px solid #00a0fb;*/
+}
+.ui-resizable-ne {
+  cursor: ne-resize;
+  width: 12px;
+  height: 12px;
+  right: 1px;
+  top: 1px;
+  background: url("../images/resize-handle.gif") top right no-repeat;
+  /*border-top: 1px solid #00a0fb;*/
+}

@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <script src="js/jquery-1.11.2.min.js"></script>
+    <script src="js/drag-drop-resize.js"></script>
+    <script src="js/tabs.js"></script>
+
+    <link href="js/jquery-ui/jquery-ui.css" rel="stylesheet">
+    <script src="js/jquery-ui/external/jquery/jquery.js"></script>
+    <script src="js/jquery-ui/jquery-ui.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="css/mystyle.css">
+    <link rel="stylesheet" type="text/css" href="css/resize.css">
+
+    <script>
+    function printMe()
+    {
+      w=window.open();
+      w.document.write($('#dropHere').html());
+      // w.print();
+      // w.close(); 
+    } 
+    </script>
+
+  </head>
+  <body>
+    <div class="dragImg"><img class="img" src="http://www.thumbshots.com/Portals/0/Images/Feature%20TS%201.jpg">
+    </div>
+
+    <div id="dropHere"></div>
+    <button onclick="printMe()">Print</button>
+    <div id="feedback">info</div>
+
+    <div id="tabs">
+      <ul>
+        <li><a href="#tabs-1">Preloaded 1</a></li>
+        <li><a href="#tabs-2">Preloaded 2</a></li>
+        <li><a href="ajax/content.php">Tab 2</a></li>
+        <li><a href="ajax/content3-slow.php">Tab 3 (slow)</a></li>
+      </ul>
+      <div id="tabs-1">
+        <p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus. Aenean tempor ullamcorper leo. Vivamus sed magna quis ligula eleifend adipiscing. Duis orci. Aliquam sodales tortor vitae ipsum. Aliquam nulla. Duis aliquam molestie erat. Ut et mauris vel pede varius sollicitudin. Sed ut dolor nec orci tincidunt interdum. Phasellus ipsum. Nunc tristique tempus lectus.</p>
+      </div>
+      <div id="tabs-2">
+        <p>Hi there! Sed ut dolor nec orci tincidunt interdum. Phasellus ipsum. Nunc tristique tempus lectus.</p>
+      </div>
+    </div>
+
+    <div id="someBox"></div>
+
+
+  </body>
+</html>
