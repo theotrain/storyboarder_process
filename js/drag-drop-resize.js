@@ -1,53 +1,57 @@
-$(function(){  
- //Make every clone image unique.  
-   var counts = [0];
-    var resizeOpts = { 
-      handles: "all",
-      // containment: "#dropHere",
-      autoHide: true
-    };    
-   $(".dragImg").draggable({
-     helper: "clone",
-     //Create counter
-     start: function() { counts[0]++; }
-    });
+//var imageArray = [];
+var asset_path = "assets/";
+// var resizeOpts = { 
+//     handles: "all",
+//     // containment: "#dropHere",
+//     autoHide: true
+//   }; 
+var dropX;
+var dropY;
 
-  $("#dropHere").droppable({
+$(function(){ 
+  setup_drag_drop_thumbs();
+});
+
+
+function setup_drag_drop_thumbs() {
+  //alert('setup drag drop');
+  //Make every clone image unique.  
+  var counts = [0];
+     
+  $(".dragImg").draggable({
+    helper: "clone",
+    appendTo: "body"
+  });
+
+  $("#c").droppable({
     drop: function(e, ui){
-      if(ui.draggable.hasClass("dragImg")) {
-        //$(this).append($(ui.helper).clone());
-        $(this).append("<div class='innerDiv"+counts[0]+"'></div>")
-        $(".innerDiv"+counts[0]).append($(ui.helper).clone());
-        //Pointing to the dragImg class in dropHere and add new class.
-        // $("#dropHere .dragImg").addClass("item-"+counts[0]);
-        // $("#dropHere .img").addClass("imgSize-"+counts[0]);
-                
-        // //Remove the current class (ui-draggable and dragImg)
-        // $("#dropHere .item-"+counts[0]).removeClass("dragImg ui-draggable ui-draggable-dragging");
-        // var droppedItem = $(".item-"+counts[0]);
-        // var leftAdjust = droppedItem.position().left - $(this).position().left
-        // var topAdjust = droppedItem.position().top - $(this).position().top
-        // droppedItem.css({left: leftAdjust, top: topAdjust})
-        // droppedItem.dblclick(function() {
-        //   $(this).remove();
-        // });     
-        // make_draggable($(".item-"+counts[0])); 
-        // $(".imgSize-"+counts[0]).resizable(resizeOpts);     
+      //alert("thumbnail dropped in main");
+      //var imageUrl = e.dataTransfer.getData('text/html');
+      //var url = $(imageUrl).attr('src');
+      console.log("drop function");
+      if (ui.draggable.hasClass("dragImg")) {
+        console.log("thumbnail dropped in main");
+        var imageSrc = asset_path + ui.draggable.attr('filename');
+
+        var offset = $("#c").offset();
+        dropX = (e.pageX - offset.left);
+        dropY = (e.pageY - offset.top);
+        // console.log("offset left: " + offset.left);
+        // console.log("offset top: " + offset.top);
+
+        // console.log("e.pageX: " + e.pageX);
+        // console.log("e.pageY: " + e.pageY);
+
+        //dropX = ui.position.left;
+        console.log("dropX: " + dropX);
+        //dropY = ui.position.top;
+        console.log("dropY: " + dropY);
+        addImageFromUrl(imageSrc, dropX, dropY);
       }
+
     }
   });
 
 
-  var zIndex = 0;
-  function make_draggable(elements)
-  { 
-    elements.draggable({
-      containment:'parent',
-      start:function(e,ui){ ui.helper.css('z-index',++zIndex); },
-      stop:function(e,ui){ $("#feedback").text("top: " + ui.position.top + "   left: " + ui.position.left);
-      }
-    });
-  }   
+};  //end setup drag drop
 
-
-});

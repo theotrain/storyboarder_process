@@ -1,0 +1,68 @@
+<html>
+  <head>
+    <script src="js/test-canvas.js"></script>
+    
+    <link rel="stylesheet" type="text/css" href="css/test-canvas.css">
+    <script>
+    var bg;
+    var score;
+    var canvas;
+    var stage;
+    var ctx;
+
+    function init() {
+
+      var ctx = document.getElementById('canvas').getContext('2d');
+      var img = new Image();
+      img.src = 'http://cliparts.co/cliparts/kTK/Byd/kTKBydjjc.png';
+      img.onload = function(){
+        ctx.drawImage(img,0,0,100,100);
+        // ctx.beginPath();
+        // ctx.moveTo(30,96);
+        // ctx.lineTo(70,66);
+        // ctx.lineTo(103,76);
+        // ctx.lineTo(170,15);
+        // ctx.stroke();
+      };
+      
+
+      // canvas = document.getElementById("canvas");
+      // stage = new createjs.Stage(canvas);
+      // ctx = canvas.getContext("2d");
+      // score = 0;
+
+      // bg = new Image();
+      // bg.src = "assets/blob.svg";
+      // bg.onload = setBG;
+    }
+
+    function setBG(event) {
+      var bkrd = new createjs.Bitmap(bg);
+      // Base the size off of the width
+      // var scale = stage.canvas.width / bkrd.image.width;
+      // bkrd.scaleX = bkrd.scaleY = scale;
+      
+      // bkrd.scaleX = stage.canvas.width / bkrd.image.width;
+      // bkrd.scaleY = stage.canvas.height / bkrd.image.height;
+      // bkrd.scaleX = .25;
+      // bkrd.scaleY = .25;
+      // stage.addChild(bkrd);
+      // stage.update();
+      ctx.mozImageSmoothingEnabled = true;
+      //ctx.mageSmoothingEnabled = false;
+      ctx.msImageSmoothingEnabled = true;
+      ctx.imageSmoothingEnabled = true;
+
+      ctx.drawImage(bg, 0, 0);
+      }
+    </script>
+  </head>
+  <body onload="init();">
+    <!-- <div id="block"> -->
+      <canvas id="canvas">
+      your browser dont support this sheeit.
+      </canvas>
+    <!-- </div> -->
+    <img src="http://cliparts.co/cliparts/kTK/Byd/kTKBydjjc.png" />
+  </body>
+</html>
