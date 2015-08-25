@@ -285,8 +285,8 @@ input[disabled].enableIfSelection:hover, input[disabled].enableIfSelection:activ
 #text_align_right_btn {
   background: url("../images/text_align_right.png") no-repeat;
 }
-#export_data_btn {
-  background: url("../images/shape_handles.png") no-repeat;
+#save_btn {
+  background: url("../images/diskette.png") no-repeat;
 }
 #import_data_btn {
   background: url("../images/shape_handles.png") no-repeat;

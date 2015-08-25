@@ -70,6 +70,7 @@ form{
 }
 .new-book{
   width: 400px;
+  height: 165px;
   background: #edeff1;
   padding-top: 20px;
   border-radius: 10px;
@@ -92,6 +93,22 @@ form{
   color: #ff0000;
   font-size: .8em;
   margin: 10px auto 20px auto;
+  /*background-color: #ddd;*/
+  text-align: center;
+}
+
+#login-error {
+  color: #ff0000;
+  font-size: 1em;
+  margin: 10px auto 10px auto;
+  /*background-color: #ddd;*/
+  text-align: center;
+}
+
+#login-message {
+  color: #4484b1;
+  font-size: 1em;
+  margin: 10px auto 10px auto;
   /*background-color: #ddd;*/
   text-align: center;
 }

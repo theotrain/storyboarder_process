@@ -3,9 +3,10 @@
 <?php
 // $pageData = $_POST["canvasData"];
 $pageData = $_POST['canvasString'];
+$pageID = $_POST['pageID'];
 
 //$query = "INSERT INTO pages (content) VALUES ('" . $pageData . "')";
-$query = "UPDATE pages SET content='" . $pageData . "' WHERE id=8;";
+$query = "UPDATE pages SET content='" . $pageData . "' WHERE id='" . $pageID . "';";
 
 // UPDATE Customers
 // SET ContactName='Alfred Schmidt', City='Hamburg'

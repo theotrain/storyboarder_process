@@ -3,12 +3,13 @@
 if (isset($login)) {
     if ($login->errors) {
         foreach ($login->errors as $error) {
-            echo $error;
+            echo "<div id='login-error'>" . $error . "</div>";
         }
     }
     if ($login->messages) {
         foreach ($login->messages as $message) {
-            echo $message;
+            echo "<div id='login-message'>" . $message. "</div>";
+            //echo $message;
         }
     }
 }

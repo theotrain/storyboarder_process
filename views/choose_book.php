@@ -12,6 +12,7 @@
           echo '<div id="error">' . $name_err . '</div>';
          } ?>
         <input type="submit"  name="create" value="Create Book" />
+        <a href="index.php?logout">Logout</a>
     </form>
     <?php if ($books->num_rows > 0) { ?> 
     <div class="choose-book">

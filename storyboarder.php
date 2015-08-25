@@ -1,5 +1,42 @@
+<?php
+  require("connection.php");
+  $gtfo = false;
+  session_start();
+  if (($_GET['id'] == null) or (!isset($_SESSION['user_id']))){
+    $gtfo = true;
+  }
+?>
+<?php
+  $query = "SELECT id FROM books WHERE id = '$_GET[id]' AND user_id = '$_SESSION[user_id]'";
+  $user_owns_book = $mysqli->query($query);
+  if(mysqli_num_rows($user_owns_book)==0){
+    $gtfo = true;
+  }
+  if ($gtfo) {
+    header('Location: index.php') ;
+    exit;
+  }
+?>
+<?php
+  $query = "SELECT id, name FROM categories";
+  $categories = $mysqli->query($query);
+?>
+<?php
+  $query = "SELECT content, id FROM pages WHERE book_id = '$_GET[id]' ORDER BY order_index LIMIT 1";
+  $page = $mysqli->query($query);
+  $thisPage = $page->fetch_array();
+  $pageData = $thisPage[0];
+  $pageID = $thisPage[1];
+  // echo "page data" . $pageData . "<br />";
+  // echo "page id" . $pageID;
+?>
 <html>
   <head>
+    <script>
+      var pageData = <?php echo $pageData . ";" ?>
+      var pageID = <?php echo $pageID . ";" ?>
+    </script>
+
     <script src="js/jquery-1.11.2.min.js"></script>
     <script src="js/tools.js"></script>
     <script src="js/drag-drop-resize.js"></script>
@@ -44,21 +81,6 @@
 
     </script>
 
-    <?php require("connection.php"); ?>
-    <?php
-      $query = "SELECT id, name FROM categories";
-      $categories = $mysqli->query($query);
-    ?>
-    <?php
-      $query1 = "SELECT content FROM pages WHERE book_id = '$_GET[id]' ORDER BY order_index LIMIT 1";
-      $page = $mysqli->query($query1);
-    ?>
-
-    <?php
-      while($row = $page->fetch_assoc()) {
-        echo $row['content'] . '</br>';
-      }
-    ?>
   </head>
   <body>
 
@@ -70,6 +92,9 @@
     </div>
     <div id="nav-bottom-full-width">
       <div class="nav-bottom">
+        <span id="button-group">
+          <button id="save_btn" class="enableIfNoSelection square_btn nav_bottom_btn" title="Add text to page" type="button"></button>
+        </span>
         <span id="button-group">
           <button id="undo_btn" class="enableIfUndo square_btn nav_bottom_btn" title="Undo" type="button"></button>
           <button id="redo_btn" class="enableIfRedo square_btn nav_bottom_btn" title="Redo" type="button"></button>
@@ -94,9 +119,9 @@
         </span>
         <span id="button-group">
           <button id="add_text_btn" class="enableIfNoSelection long_btn nav_bottom_btn" title="Add text to page" type="button"></button>
-          <button id="export_data_btn" class="enableIfNoSelection long_btn nav_bottom_btn" title="EXPORT DATA" type="button"></button>
+          <!-- <button id="save_btn" class="enableIfNoSelection long_btn nav_bottom_btn" title="EXPORT DATA" type="button"></button> -->
           <button id="import_data_btn" class="enableIfNoSelection long_btn nav_bottom_btn" title="IMPORT DATA" type="button"></button>
-          </span>
+        </span>
       </div>
     </div>
   

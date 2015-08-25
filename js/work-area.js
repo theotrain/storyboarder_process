@@ -5,6 +5,7 @@ var undoArray = [];
 var textChanged = false;
 var MAX_UNDO_LEVELS = 15;
 
+
 $(function(){
   canvas = new fabric.Canvas('c');
   // canvas.centeredScaling = true;
@@ -15,7 +16,7 @@ $(function(){
   initTextControls();
   disableTextEditor();
 
-  changeMade(); //add default undo item so that we can undo back to blank
+  //changeMade(); //add default undo item so that we can undo back to blank
 
   canvas.on({
     // 'object:moving': onChange,
@@ -46,8 +47,13 @@ $(function(){
       // }
     }
   });
-
+  loadPageDataToCanvas();
 })
+
+function loadPageDataToCanvas() {
+  var canvasData = pageData;
+  canvas.loadFromDatalessJSON(canvasData, firstPageLoadedFromJSON); 
+}
 
 function changeMade(s) {
   console.log("------------------change made: " + s);
@@ -248,7 +254,7 @@ function initButtons() {
     addText();
   });
 
-  $( "#export_data_btn" ).click(function() {
+  $( "#save_btn" ).click(function() {
     var canvasData = canvas.toDatalessJSON();
     var canvasStr = JSON.stringify(canvasData);
     console.log("cavasData------------");
@@ -258,7 +264,7 @@ function initButtons() {
     $.ajax({
       url: 'save-page.php',
       //data: JSON.stringify(canvasData),
-      data: { canvasString: canvasStr },
+      data: { canvasString: canvasStr, pageID: pageID },
       dataType: 'text',
       method: 'POST',
       success: function() {
@@ -267,7 +273,10 @@ function initButtons() {
       error: function(xhr, status, error) {
         //alert('its broke!');
         //alert(xhr.responseText);
-        alert(error);
+        //alert(error);
+        console.log("XHR: " + xhr);
+        console.log("status: " + status);
+        console.log("error: " + error);
         //alert(jQuery.parseJSON(xhr.responseText));
       }
     });
@@ -400,6 +409,11 @@ function initTextControls() {
   $("#text_fore").spectrum(color_picker_foreground_object);
   // $("#text_back").spectrum(color_picker_background_object);
 
+}
+
+function firstPageLoadedFromJSON() {
+  changeMade();
+  console.log("FIRST PAGE LOADED");
 }
 
 function pageLoadedFromJSON() {

@@ -1,5 +1,7 @@
-<?php
 
+
+<?php
+// exit("break out of index");
 /**
  * A simple, clean and secure PHP Login Script / MINIMAL VERSION
  * For more versions (one-file, advanced, framework-like) visit http://www.php-login.net
@@ -30,10 +32,9 @@ require_once("classes/Login.php");
 // create a login object. when this object is created, it will do all login/logout stuff automatically
 // so this single line handles the entire login process. in consequence, you can simply ...
 $login = new Login();
-
 // ... ask if we are logged in here:
 if ($login->isUserLoggedIn() == true) {
-    if ($_POST["book_name"] != null) {
+    if (isset($_POST["book_name"])) {
         // echo $_POST["book_name"];
         if ((!empty($_POST["book_name"])) && preg_match('/^[A-Za-z][A-Za-z0-9 -]*$/', $_POST["book_name"])){
             //submit name
