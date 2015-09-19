@@ -15,6 +15,7 @@ var MAX_UNDO_LEVELS = 15;
 
 $(function(){
   canvas = new fabric.Canvas('c');
+  canvas.setBackgroundColor('rgba(255, 255, 255, 1)', canvas.renderAll.bind(canvas));
   // canvas.centeredScaling = true;
   // canvas.centeredRotation = true;
   canvas.perPixelTargetFind = true;
@@ -358,7 +359,7 @@ function initButtons() {
       dataType: 'text',
       method: 'POST',
       success: function() {
-        alert('form has been posted successfully');
+        //alert('form has been posted successfully');
       },
       error: function(xhr, status, error) {
         //alert('its broke!');
@@ -370,7 +371,42 @@ function initButtons() {
         //alert(jQuery.parseJSON(xhr.responseText));
       }
     });
-  });
+    //save page thumbnail
+    var dataURL = canvas.toDataURL({
+      format: 'jpeg',
+      quality: 0.9,
+      multiplier: 0.25
+    });
+    // var dataURL = canvas.toDataURL({
+    //   format: 'png',
+    //   multiplier: 1
+    // });
+    $.ajax({
+      url: 'save-thumbnail.php',
+      //data: JSON.stringify(canvasData),
+      //encodeURIComponent(canvasStr)
+      data: { imgBase64: dataURL, pageID: pageID },
+      //dataType: 'text',
+      method: 'POST',
+      // async: false,
+      // cache: false,
+      // contentType: false,
+      // processData: false,
+      success: function() {
+        alert('returned from save thumbnail');
+      },
+      error: function(xhr, status, error) {
+        //alert('its broke!');
+        //alert(xhr.responseText);
+        //alert(error);
+        console.log("XHR: " + xhr);
+        console.log("status: " + status);
+        console.log("error: " + error);
+        //alert(jQuery.parseJSON(xhr.responseText));
+      }
+    });
+
+  });//end save btn click
 
   $( "#page_add_btn" ).click(function() {
     $.ajax({
