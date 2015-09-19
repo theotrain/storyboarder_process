@@ -1,7 +1,4 @@
-
-
 <?php
-// exit("break out of index");
 /**
  * A simple, clean and secure PHP Login Script / MINIMAL VERSION
  * For more versions (one-file, advanced, framework-like) visit http://www.php-login.net
@@ -12,7 +9,6 @@
  * @link https://github.com/panique/php-login-minimal/
  * @license http://opensource.org/licenses/MIT MIT License
  */
-
 // checking for minimum PHP version
 if (version_compare(PHP_VERSION, '5.3.7', '<')) {
     exit("Sorry, Simple PHP Login does not run on a PHP version smaller than 5.3.7 !");
@@ -21,14 +17,10 @@ if (version_compare(PHP_VERSION, '5.3.7', '<')) {
     // (this library adds the PHP 5.5 password hashing functions to older versions of PHP)
     require_once("libraries/password_compatibility_library.php");
 }
-
 // include the configs / constants for the database connection
 require_once("connection.php");
-
 // load the login class
 require_once("classes/Login.php");
-
-
 // create a login object. when this object is created, it will do all login/logout stuff automatically
 // so this single line handles the entire login process. in consequence, you can simply ...
 $login = new Login();
@@ -40,8 +32,14 @@ if ($login->isUserLoggedIn() == true) {
             //submit name
             $query = "INSERT INTO books (name, user_id) VALUES('$_POST[book_name]', '$_SESSION[user_id]')";
             $books = $mysqli->query($query);
+            $insert_id = $mysqli->insert_id;
+
+            $query2 = "INSERT INTO pages (book_id, content) VALUES('$insert_id', '{}')";
+            $page = $mysqli->query($query2);
+            // {"objects":[],"background":""}
             // echo $_POST["book_name"] . " is a legit name";
-            header( 'Location: storyboarder.php?id=' . $mysqli->insert_id ) ;
+            header( 'Location: storyboarder.php?id=' . $insert_id ) ;
+            // header( 'Location: storyboarder.php?id=' . $mysqli->insert_id ) ;
         } else {
             //create error
             $name_err = "Alphanumeric characters, spaces, and hyphens only";

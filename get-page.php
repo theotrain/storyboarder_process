@@ -4,10 +4,12 @@
 
 //$pageData = $_POST['canvasString'];
 
-$query = "SELECT content FROM pages WHERE id = 8 LIMIT 1;";
+$query = "SELECT content FROM pages WHERE id = " . $_POST['loadPageID'] . " LIMIT 1;";
+
+//$query = "SELECT content FROM pages WHERE id = 8 LIMIT 1;";
 
 // if ($mysqli->query($query) === TRUE) {
-//     echo "New record created successfully";
+//     echo "got record successfully";
 // } else {
 //     echo "Error: " . $query . ": -----> " . $mysqli->error;
 //     //echo "Error: " . $query . ": -----> " . mysqli_error($mysqli);

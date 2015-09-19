@@ -5,6 +5,13 @@ var undoArray = [];
 var textChanged = false;
 var MAX_UNDO_LEVELS = 15;
 
+// storyboarder.php sets the below variables:
+// var pageData ---current page graphics data
+// var pageID ---id# of current page
+// var pageIDArray  ----array of page IDs
+// var pageIDArrayIndex
+// var bookID
+
 
 $(function(){
   canvas = new fabric.Canvas('c');
@@ -47,12 +54,44 @@ $(function(){
       // }
     }
   });
-  loadPageDataToCanvas();
+  loadPageDataToCanvas(pageData);
+  setPageButtons();
 })
 
-function loadPageDataToCanvas() {
-  var canvasData = pageData;
-  canvas.loadFromDatalessJSON(canvasData, firstPageLoadedFromJSON); 
+function loadPageDataToCanvas(pgData) {
+  //var canvasData = pageData;
+  //var canvasData = decodeURIComponent(pageData);
+  //clear undo stack
+  clearUndoArray();
+  canvas.loadFromDatalessJSON(pgData, pageLoadedFromJSON); 
+}
+
+// function firstPageLoadedFromJSON() {
+//   changeMade();
+//   console.log("FIRST PAGE LOADED");
+// }
+
+function pageLoadedFromJSON() {
+  changeMade();
+  console.log("PAGE LOADED");
+}
+
+function pageLoadedFromUndoStack() {
+  //changeMade();
+  canvas.renderAll();
+  console.log("PAGE LOADED");
+}
+
+
+
+// function pageLoadedFromJSON() {
+//   canvas.renderAll();
+//   console.log("PAGE LOADED");
+// }
+
+function clearUndoArray() {
+  undoIndex = 0;
+  undoArray = [];
 }
 
 function changeMade(s) {
@@ -75,12 +114,37 @@ function changeMade(s) {
 
   var canvasData = canvas.toDatalessJSON();
   var canvasStr = JSON.stringify(canvasData);
-  //console.log("contents before push: " + canvasStr);
+  //console.log("PUSHING TO UNDO ARRAY: " + canvasStr);
+  
   undoArray.push(canvasStr);
+
+  for (var i=0; i<undoArray.length; i++) {
+    console.log("UNDO ARRAY[" + i + "]: " + undoArray[i]);
+  }
+
   undoIndex = undoArray.length - 1;
-  console.log("ADDING TO UNDO ARRAY");
+
+  console.log("UNDO INDEX:" + undoIndex);
+  //console.log("ADDING TO UNDO ARRAY");
   //undoStats();
   setUndoButtons();
+}
+
+function setPageButtons() {  
+  if (pageIDArrayIndex <= 0) {
+    disable_btn($(".page_control_back"), true);
+  } else {
+    if (pageIDArray.length > 1) {
+      disable_btn($(".page_control_back"), false);
+    }
+  }
+  if (pageIDArrayIndex >= pageIDArray.length-1) {
+    disable_btn($(".page_control_forward"), true);
+  } else {
+    if (pageIDArray.length > 1) {
+      disable_btn($(".page_control_forward"), false);
+    }
+  }
 }
 
 function setUndoButtons() {
@@ -119,7 +183,7 @@ function redo() {
 
 function loadState() {
   var canvasData = JSON.parse(undoArray[undoIndex]);
-  canvas.loadFromDatalessJSON(canvasData, pageLoadedFromJSON); 
+  canvas.loadFromDatalessJSON(canvasData, pageLoadedFromUndoStack); 
 }
 
 function undoStats() {
@@ -254,16 +318,42 @@ function initButtons() {
     addText();
   });
 
+  $( "#first_btn" ).click(function() {
+    if (pageIDArrayIndex > 0) {
+      goToPageIndex(0);
+    }
+  });
+
+  $( "#previous_btn" ).click(function() {
+    if (pageIDArrayIndex > 0) {
+      goToPageIndex(pageIDArrayIndex-1);
+    }
+  });
+
+  $( "#next_btn" ).click(function() {
+    if (pageIDArrayIndex < pageIDArray.length-1) {
+      goToPageIndex(pageIDArrayIndex+1);
+    }
+  });
+
+  $( "#last_btn" ).click(function() {
+    if (pageIDArrayIndex < pageIDArray.length-1) {
+      goToPageIndex(pageIDArray.length-1);
+    }
+  });
+
   $( "#save_btn" ).click(function() {
     var canvasData = canvas.toDatalessJSON();
     var canvasStr = JSON.stringify(canvasData);
     console.log("cavasData------------");
     console.log(canvasData);
+    console.log("JSON.STRINGIFIED canvas data------------");
     console.log(JSON.stringify(canvasData));
-
+    //cs = canvasStr.replace(/[\n\r]/g, '<br />');
     $.ajax({
       url: 'save-page.php',
       //data: JSON.stringify(canvasData),
+      //encodeURIComponent(canvasStr)
       data: { canvasString: canvasStr, pageID: pageID },
       dataType: 'text',
       method: 'POST',
@@ -281,6 +371,94 @@ function initButtons() {
       }
     });
   });
+
+  $( "#page_add_btn" ).click(function() {
+    $.ajax({
+      url: 'new-page.php',
+      data: { bookID: bookID },
+      //data: "",
+      type: 'POST',
+      dataType: 'text',
+      success: function(data) {
+        //var canvasData = data[0];
+        data = data.replace(/\s+/g, '');//remove spaces
+        console.log("ID returned from new page ajax call: " + data);
+        pageIDArray.push(data);
+
+        // var pageID ---id# of current page
+// var pageIDArray  ----array of page IDs
+// var pageIDArrayIndex
+        addPageSelectOption(data, pageIDArray.length)
+        goToPageIndex(pageIDArray.length-1)
+
+        //alert('form has been posted successfully');
+      },
+      error: function(xhr, status, error) {
+        //alert('its broke!');
+        //alert(xhr.responseText);
+        alert(error);
+        //alert(jQuery.parseJSON(xhr.responseText));
+      }
+    });
+  });
+
+  $( "#page_delete_btn" ).click(function() {
+    if (pageIDArray.length == 1) {
+      alert("What is a book without at least one page?");
+    } else {
+      $.ajax({
+        url: 'delete-page.php',
+        data: { pageID: pageID },
+        //data: "",
+        type: 'POST',
+        dataType: 'text',
+        success: function(data) {
+          //var canvasData = data[0];
+          console.log("returned from page delete OK: " + data);
+          pageIDArray.splice(pageIDArrayIndex, 1);
+
+          //remove page # from select menu
+          //$("#page_select option[value='" + pageID + "']").remove();
+          rewritePageSelectOptions();
+
+          if (pageIDArrayIndex > 0) {
+            goToPageIndex(pageIDArrayIndex-1);
+          } else {
+            goToPageIndex(0);
+          }
+          // var pageID ---id# of current page
+          // var pageIDArray  ----array of page IDs
+          // var pageIDArrayIndex
+          // addPageSelectOption(data, pageIDArray.length)
+          // goToPageIndex(pageIDArray.length-1)
+
+          //alert('form has been posted successfully');
+        },
+        error: function(xhr, status, error) {
+          //alert('its broke!');
+          //alert(xhr.responseText);
+          alert(error);
+          //alert(jQuery.parseJSON(xhr.responseText));
+        }
+      });
+    }
+  });
+
+  function addPageSelectOption(val, txt) {
+    $('#page_select').append($('<option>', {
+        value:val,
+        text:txt
+    }));  
+  }
+
+  function rewritePageSelectOptions() {
+    //remove all
+    $('#page_select').children("option").remove();
+    //add all
+    for (var i = 0; i < pageIDArray.length; i++) {
+      addPageSelectOption(pageIDArray[i], i+1);
+    }  
+  }
 
   $( "#import_data_btn" ).click(function() {
     $.ajax({
@@ -411,16 +589,6 @@ function initTextControls() {
 
 }
 
-function firstPageLoadedFromJSON() {
-  changeMade();
-  console.log("FIRST PAGE LOADED");
-}
-
-function pageLoadedFromJSON() {
-  canvas.renderAll();
-  console.log("PAGE LOADED");
-}
-
 function changeFont() {
   console.log("value of fonts: " + $("#fonts")[0].value);
   canvas.getActiveObject().fontFamily = $("#fonts")[0].value;
@@ -517,6 +685,53 @@ function disableTextEditor() {
   //$(".textEdit").hide();
   $(".textEdit").effect('blind', { direction: 'up', mode: 'hide' }, 300);
 }
+
+function pageSelect(dropdown) {
+    //var value = dropdown.options[dropdown.selectedIndex].value;
+    var index = dropdown.options[dropdown.selectedIndex].text-1;
+    //alert(index);
+    goToPageIndex(index);
+}
+
+function goToPageIndex(i) {
+  pageIDArrayIndex = i;
+  var loadPageID = pageIDArray[pageIDArrayIndex];
+  //alert("load this page id: " + loadPageID);
+  $.ajax({
+    url: 'get-page.php',
+    data: {"loadPageID": loadPageID},
+    //data: "",
+    type: 'POST',
+    dataType: 'text',
+    success: function(data) {
+      //var canvasData = data[0];
+      console.log("DATA LOADED: " + data);
+      //console.log("DATA DECODED: " + decodeURIComponent(data));
+      pageID = loadPageID;
+      document.getElementById("page_select").selectedIndex = pageIDArrayIndex;
+      setPageButtons();
+      //var jsonMatch = data.match( /\/\*JSON\[\*\/([\s\S]*?)\/\*\]JSON\*\// );
+      //data = JSON.parse( (jsonMatch ? jsonMatch[1] : data).replace(/\n/g,"") );
+      //var canvasData = JSON.parse(decodeURIComponent(data));
+      //var canvasData = JSON.parse(data);
+      loadPageDataToCanvas(JSON.parse(data));
+      //var canvasData = data;
+      //canvas.loadFromDatalessJSON(canvasData, pageLoadedFromJSON)
+      //alert('form has been posted successfully');
+    },
+    error: function(xhr, status, error) {
+      //alert('its broke!');
+      //alert(xhr.responseText);
+      alert(error);
+      //alert(jQuery.parseJSON(xhr.responseText));
+    }
+  });
+
+}
+
+// function jsonEscape(str)  {
+//     return str.replace(/\n/g, "\\\\n").replace(/\r/g, "\\\\r").replace(/\t/g, "\\\\t");
+// }
 
 
 

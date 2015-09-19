@@ -22,19 +22,34 @@
   $categories = $mysqli->query($query);
 ?>
 <?php
-  $query = "SELECT content, id FROM pages WHERE book_id = '$_GET[id]' ORDER BY order_index LIMIT 1";
+  $query = "SELECT content, id FROM pages WHERE book_id = '$_GET[id]' ORDER BY order_index";
   $page = $mysqli->query($query);
-  $thisPage = $page->fetch_array();
-  $pageData = $thisPage[0];
-  $pageID = $thisPage[1];
+  while($row = $page->fetch_array()) {
+    $pageIDs[] = $row['id'];
+  }
+  mysqli_data_seek($page, 0);
+  // var $pageData;
+  while($row = $page->fetch_array()) {
+    // echo " ->";
+    $pageData = $row['content'];
+    break;
+  }
+  //$pageData = urldecode($pageData);
+  $pageID = $pageIDs[0];
+  //$pageData = $thisPage[0]['content'];
+  //$pageID = $thisPage[0]['id'];
   // echo "page data" . $pageData . "<br />";
   // echo "page id" . $pageID;
 ?>
 <html>
   <head>
     <script>
+      var bookID = <?php echo $_GET[id] . ";" ?>
       var pageData = <?php echo $pageData . ";" ?>
       var pageID = <?php echo $pageID . ";" ?>
+      var pageIDArray = <?php echo "[" . join(',', $pageIDs) . "];" ?>
+      var pageIDArrayIndex = 0;
+      // alert "id array: " . $pageIDs;
     </script>
 
     <script src="js/jquery-1.11.2.min.js"></script>
@@ -93,7 +108,7 @@
     <div id="nav-bottom-full-width">
       <div class="nav-bottom">
         <span id="button-group">
-          <button id="save_btn" class="enableIfNoSelection square_btn nav_bottom_btn" title="Add text to page" type="button"></button>
+          <button id="save_btn" class="enableIfNoSelection square_btn nav_bottom_btn" title="Save page" type="button"></button>
         </span>
         <span id="button-group">
           <button id="undo_btn" class="enableIfUndo square_btn nav_bottom_btn" title="Undo" type="button"></button>
@@ -122,6 +137,40 @@
           <!-- <button id="save_btn" class="enableIfNoSelection long_btn nav_bottom_btn" title="EXPORT DATA" type="button"></button> -->
           <button id="import_data_btn" class="enableIfNoSelection long_btn nav_bottom_btn" title="IMPORT DATA" type="button"></button>
         </span>
+
+        <span id="button-group">
+          <button id="page_delete_btn" class="square_btn nav_bottom_btn" title="Delete this page" type="button"></button>
+       
+          <button id="page_add_btn" class="square_btn nav_bottom_btn" title="Add new page" type="button"></button>
+          <!-- <button id="save_btn" class="enableIfNoSelection long_btn nav_bottom_btn" title="EXPORT DATA" type="button"></button> -->
+        </span>
+
+        <span id="page-group">
+          <button id="first_btn" class="page_control_back square_btn nav_bottom_btn" title="First page" type="button"></button>
+          <button id="previous_btn" class="page_control_back square_btn nav_bottom_btn" title="Previous page" type="button"></button>
+          <span id="styled_select">
+            <select name="page_select" id="page_select" title="Go to page" onChange="pageSelect(this);">
+            <!-- loop through $pageIDs for values, use 0... for text. -->
+            <?php
+              $count = 1;
+              foreach ($pageIDs as $id) {
+              $value = $value * 2;
+              echo '<option value="'. $id .'">'. $count .'</option>';
+              $count += 1;
+            }
+            ?>
+              <!-- <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option> -->
+            </select>
+          </span>
+          <button id="next_btn" class="page_control_forward square_btn nav_bottom_btn" title="Next page" type="button"></button>
+          <button id="last_btn" class="page_control_forward square_btn nav_bottom_btn" title="Last page" type="button"></button>
+        </span>
+
+        
+
+
       </div>
     </div>
   

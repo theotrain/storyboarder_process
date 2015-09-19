@@ -1,8 +1,9 @@
 <?php require_once("connection.php"); ?>
 
 <?php
-// $pageData = $_POST["canvasData"];
-$pageData = $_POST['canvasString'];
+// $canvasString arrives URI encoded to keep text characters escaped.
+//$pageData = urldecode($_POST['canvasString']);
+$pageData = mysql_escape_string($_POST['canvasString']);
 $pageID = $_POST['pageID'];
 
 //$query = "INSERT INTO pages (content) VALUES ('" . $pageData . "')";

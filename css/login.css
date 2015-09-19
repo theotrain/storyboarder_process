@@ -70,7 +70,7 @@ form{
 }
 .new-book{
   width: 400px;
-  height: 165px;
+  /*height: 165px;*/
   background: #edeff1;
   padding-top: 20px;
   border-radius: 10px;
@@ -166,7 +166,7 @@ a{
   font-family: Arial;
   color: gray;
   display: block;
-  margin: 15px auto;
+  margin: 15px auto 0px;
   text-decoration: none;
   transition: all 0.3s ease;
   font-size: 12px;

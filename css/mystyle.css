@@ -1,5 +1,6 @@
 body {
   background-color: #e6e7e8;
+  font-family: Arial;
 }
 #dropHere {
     width:400px;
@@ -151,14 +152,16 @@ body {
 }
 #nav-bottom-full-width {
   height: 50px;
-  background-color: #e6e7e8;
+  /*background-color: #e6e7e8;*/
+  /*background-color: #0000ff;*/
   /*border-bottom: 1px solid #939597;*/
 }
 .nav-bottom {
   margin:0 auto;
   height: 60px;
   width:1022px;
-  background-color: #e6e7e8;
+  /*background-color: #e6e7e8;*/
+  /*background-color: #0fff00;*/
   /*background: url("../images/resize-handle.gif");*/
 }
 #absPos {
@@ -198,9 +201,34 @@ body {
 /*input#move_to_top_button {
     background: url("../images/button.png") no-repeat scroll 0 0
 }*/
-
+#mini {
+  font-size: .6em;
+}
 #button-group {
+  height:32px;
   margin-right: 15px;
+  /*height:32px;*/
+  /*background-color: #d5d5ff;*/
+  vertical-align: none;
+}
+.page_control {
+  margin: 0 3 0 3;
+}
+#styled_select {
+  /*background-color: #ffff00;*/
+  /*vertical-align: middle;*/
+  /*margin-top: 15px;*/
+}
+#page_select {
+  /*background-color: #00ff00;*/
+ /* vertical-align: middle;*/
+}
+#page-group {
+  /*height: 32px;*/
+  /*width: 50px;*/
+  margin-right: 15px;
+  /*top: 20px;*/
+  /*background-color: #00ff00;*/
 }
 
 button:focus {outline:0;}
@@ -223,14 +251,16 @@ button:disabled {opacity:0.5;}
   width: 40px;
 }*/
 .nav_bottom_btn {
-  margin-top: 9px;
+  /*margin-top: 9px;*/
   border: 0px;
-  padding: 0px;
-  /*background-color: #e6e7e8;*/
+  /*padding: 0px;*/
+  background-color: #ff8888;
 }
 .square_btn { 
+  margin-top: 9px;
   height: 32px;
   width: 32px;
+  background-color: #ff33ff;
 }
 .long_btn {
   height: 32px;
@@ -292,6 +322,24 @@ input[disabled].enableIfSelection:hover, input[disabled].enableIfSelection:activ
   background: url("../images/shape_handles.png") no-repeat;
 }
 
+#first_btn {
+  background: url("../images/document_page_first.png") no-repeat;
+}
+#previous_btn {
+  background: url("../images/document_page_previous.png") no-repeat;
+}
+#next_btn {
+  background: url("../images/document_page_next.png") no-repeat;
+}
+#last_btn {
+  background: url("../images/document_page_last.png") no-repeat;
+}
+#page_add_btn {
+  background: url("../images/page_add.png") no-repeat;
+}
+#page_delete_btn {
+  background: url("../images/page_delete.png") no-repeat;
+}
 
 /*width of color pallete in color picker*/
 .full-spectrum .sp-palette {
