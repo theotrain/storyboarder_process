@@ -57,6 +57,7 @@
     <script src="js/drag-drop-resize.js"></script>
     <script src="js/tabs.js"></script>
     <script src="js/work-area.js"></script>
+    <script src="js/modal.js"></script>
 
     <script src="lib/easeljs-0.8.1.min.js"></script>
     <script src="lib/preloadjs-0.6.1.min.js"></script>
@@ -71,6 +72,7 @@
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" href="css/spectrum.css" />
     <link rel="stylesheet" type="text/css" href="css/mystyle.css">
+    <link rel="stylesheet" type="text/css" href="css/modal.css">
 
     <script src="js/spectrum.js"></script>
     <!-- 
@@ -103,6 +105,10 @@
     <div id="nav-top-full-width">
       <div class="nav-top">
         <!-- title and nav -->
+        <!-- <a href='#'>modal</a> -->
+
+        <a id='reorder' href='#'>reorder pages</a>
+
       </div>
     </div>
     <div id="nav-bottom-full-width">

@@ -351,15 +351,20 @@ function initButtons() {
     console.log("JSON.STRINGIFIED canvas data------------");
     console.log(JSON.stringify(canvasData));
     //cs = canvasStr.replace(/[\n\r]/g, '<br />');
+    var dataURL = canvas.toDataURL({
+      format: 'jpeg',
+      quality: 0.9,
+      multiplier: 0.25
+    });
     $.ajax({
       url: 'save-page.php',
       //data: JSON.stringify(canvasData),
       //encodeURIComponent(canvasStr)
-      data: { canvasString: canvasStr, pageID: pageID },
-      dataType: 'text',
+      data: { canvasString: canvasStr, pageID: pageID, imgBase64: dataURL },
+      //dataType: 'text',
       method: 'POST',
       success: function() {
-        //alert('form has been posted successfully');
+        alert('return from save page and thumbnail');
       },
       error: function(xhr, status, error) {
         //alert('its broke!');
@@ -372,39 +377,34 @@ function initButtons() {
       }
     });
     //save page thumbnail
-    var dataURL = canvas.toDataURL({
-      format: 'jpeg',
-      quality: 0.9,
-      multiplier: 0.25
-    });
     // var dataURL = canvas.toDataURL({
     //   format: 'png',
     //   multiplier: 1
     // });
-    $.ajax({
-      url: 'save-thumbnail.php',
-      //data: JSON.stringify(canvasData),
-      //encodeURIComponent(canvasStr)
-      data: { imgBase64: dataURL, pageID: pageID },
-      //dataType: 'text',
-      method: 'POST',
-      // async: false,
-      // cache: false,
-      // contentType: false,
-      // processData: false,
-      success: function() {
-        alert('returned from save thumbnail');
-      },
-      error: function(xhr, status, error) {
-        //alert('its broke!');
-        //alert(xhr.responseText);
-        //alert(error);
-        console.log("XHR: " + xhr);
-        console.log("status: " + status);
-        console.log("error: " + error);
-        //alert(jQuery.parseJSON(xhr.responseText));
-      }
-    });
+    // $.ajax({
+    //   url: 'save-thumbnail.php',
+    //   //data: JSON.stringify(canvasData),
+    //   //encodeURIComponent(canvasStr)
+    //   data: { imgBase64: dataURL, pageID: pageID },
+    //   //dataType: 'text',
+    //   method: 'POST',
+    //   // async: false,
+    //   // cache: false,
+    //   // contentType: false,
+    //   // processData: false,
+    //   success: function() {
+    //     alert('returned from save thumbnail');
+    //   },
+    //   error: function(xhr, status, error) {
+    //     //alert('its broke!');
+    //     //alert(xhr.responseText);
+    //     //alert(error);
+    //     console.log("XHR: " + xhr);
+    //     console.log("status: " + status);
+    //     console.log("error: " + error);
+    //     //alert(jQuery.parseJSON(xhr.responseText));
+    //   }
+    // });
 
   });//end save btn click
 
@@ -480,21 +480,35 @@ function initButtons() {
     }
   });
 
-  function addPageSelectOption(val, txt) {
-    $('#page_select').append($('<option>', {
-        value:val,
-        text:txt
-    }));  
-  }
+  // function addPageSelectOption(val, txt) {
+  //   $('#page_select').append($('<option>', {
+  //       value:val,
+  //       text:txt
+  //   }));  
+  // }
 
-  function rewritePageSelectOptions() {
-    //remove all
-    $('#page_select').children("option").remove();
-    //add all
-    for (var i = 0; i < pageIDArray.length; i++) {
-      addPageSelectOption(pageIDArray[i], i+1);
-    }  
-  }
+  // function rewritePageSelectOptions() {
+  //   //remove all
+  //   $('#page_select').children("option").remove();
+  //   //add all
+  //   for (var i = 0; i < pageIDArray.length; i++) {
+  //     addPageSelectOption(pageIDArray[i], i+1);
+  //   }  
+  // }
+
+  // after reordering pages we need to rewrite page select options
+
+  // use the order array to rewrite the pageIDArray.
+  // find the pageID in pageIDArray and and change pageIDArrayIndex to that index number
+  // call rewritePageSelectOptions()
+
+  // pageID
+  // pageIDArray
+  // pageIDArrayIndex
+
+
+
+
 
   $( "#import_data_btn" ).click(function() {
     $.ajax({
@@ -623,6 +637,23 @@ function initTextControls() {
   $("#text_fore").spectrum(color_picker_foreground_object);
   // $("#text_back").spectrum(color_picker_background_object);
 
+}
+
+function addPageSelectOption(val, txt) {
+  $('#page_select').append($('<option>', {
+      value:val,
+      text:txt
+  })); 
+}
+
+function rewritePageSelectOptions() {
+  //remove all
+  $('#page_select').children("option").remove();
+  //add all
+  for (var i = 0; i < pageIDArray.length; i++) {
+    addPageSelectOption(pageIDArray[i], i+1);
+  }
+  $('#page_select').val(pageID);
 }
 
 function changeFont() {
