@@ -35,6 +35,11 @@ $result = $mysqli->query($query);
 //     echo "No pages could be found!";
 // }
 
+//get timestamp in seconds, load like thumbnail.jpg?t=123123123
+//to avoid cached page thumbnails
+$date = new DateTime();
+$timeInSeconds = $date->getTimestamp();
+
 if ($result->num_rows > 0) {
   // output data of each row
   $order = array();
@@ -44,7 +49,7 @@ if ($result->num_rows > 0) {
   echo "<div id='thumb-container-modal'>";
   while($row = $result->fetch_assoc()) {
     echo "<span id='ID_" . $row['id'] . "' class='thumb-modal'>";
-    echo "<img src='" . $row['thumbnail'] . "'>";
+    echo "<img src='" . $row['thumbnail'] . "?t=" . $timeInSeconds . "'>";
     echo "</span>";
     $order[] = $row['id'];
   }

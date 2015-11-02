@@ -77,7 +77,7 @@ $(function(){
          opacity: 0.6, 
          cursor: 'move',
          //cursorAt: { top: 118, left: 93 },
-         axis: "x",
+         //axis: "x",
          update: function(){
             saveDisplayChanges();
             // $('#categorysavemessage').css("color","red");
@@ -100,6 +100,7 @@ $(function(){
         // console.log('ORDER (to array): ' + serializedToArray(order)); 
         updatePageIDArray(order);
         rewritePageSelectOptions();
+        setPageButtons();
       } else {
         console.log("the news is not good!")
         console.log("the response: " + theResponse);

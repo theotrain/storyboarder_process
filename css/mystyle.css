@@ -75,14 +75,21 @@ body {
   width:1022px;
   margin:0 auto;
   /*background:#f00;*/
-  height: 800px;
+  height: 950px;
 }
 #sidebar {
-  float:right;
-  width:248px;
-  /*background:#00f;*/
   display: inline-block;
-  margin-left:22px;
+  width:248px;
+  /*float:left;
+  width:248px;
+  display: inline-block;*/
+  /*float:right;
+  width:248px;*/
+  /*background:#00f;*/
+  /*display: inline-block;
+  margin-right:22px;*/
+  position: relative;
+  vertical-align: top;
 }
 .textEdit {
   position: relative;
@@ -110,13 +117,33 @@ body {
 .color_picker{
   top: -12px;
 }
-#textArea {
+#canvasBox {
+  background-color: #00ffff;
+  display: inline-block;
   position: relative;
+  vertical-align: top;
+  margin-left: 19px;
+}
+#c {
+  /*background-color: #efe;*/
+  /*display: inline-block;*/
+  /*display: inline-block;
+  position: relative;*/
+  /*background-color: #fff;
+  float:right;
+  position: relative;
+  margin-left: 270px;*/
+  /*float:left;
+  position: relative;*/
+  /*margin-left: 270px;*/
+}
+#textArea {
+  position: relative
   /*background-color: #9999ff;*/
   width: 100%;
 }
 #main {
-  float:left;
+  float:right;
   width:750px;
   height:950px;
   /*min-width:750px;
@@ -126,13 +153,7 @@ body {
   background: url("../layouts/layout1.gif") #d5d5d5;
   overflow: hidden;
 }
-#c {
-  /*background-color: #efe;*/
-  background-color: #fff;
-  float:left;
-  display: inline-block;
-  position: relative;
-}
+
 /*#nav {
   position: fixed;
   width: 100%;
@@ -351,3 +372,137 @@ input[disabled].enableIfSelection:hover, input[disabled].enableIfSelection:activ
   margin-left:auto;
   margin-right:0;
 }*/
+.loader {
+  position:absolute;
+  /*display: inline-block;*/
+  top:0px;
+  left:4px;
+  visibility: hidden;
+  /*height:100px;
+  width:100px;*/
+  /*background-color: #ffff00;*/
+}
+
+svg path,
+svg rect{
+  fill: #000000;
+}
+
+/*nav*/
+
+nav {
+  /*background-color: #fff;*/
+  /*border: 1px solid #dedede;*/
+  /*border-radius: 4px;*/
+  /*box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.055);*/
+  /*color: #888;*/
+  /*display: block;*/
+  /*margin: 8px 22px 8px 22px;*/
+  /*overflow: hidden;*/
+  /*width: 90%; */
+  position:relative;
+  z-index:10;
+  right:0px;
+  display: inline-block;
+  vertical-align: middle;
+  float: right;
+  margin: 8px 0px;
+}
+
+nav ul {
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li {
+  display: inline-block;
+  list-style-type: none;
+  
+  -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -ms-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.2s; 
+}
+  
+nav > ul > li > a > .caret {
+  border-top: 4px solid #e6e7e8;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+  content: "";
+  display: inline-block;
+  height: 0;
+  width: 0;
+  vertical-align: middle;
+
+  -webkit-transition: color 0.1s linear;
+  -moz-transition: color 0.1s linear;
+  -o-transition: color 0.1s linear;
+    transition: color 0.1s linear; 
+}
+
+nav > ul > li > a {
+  /*color: #aaa;*/
+  color: #e6e7e8;
+  display: block;
+  /*line-height: 56px;*/
+  line-height: 30px;
+  padding: 0 24px;
+  text-decoration: none;
+}
+
+nav > ul > li:hover {
+  /*background-color: rgb( 40, 44, 47 );*/
+}
+
+nav > ul > li:hover > a {
+  color: rgb( 255, 255, 255 );
+}
+
+nav > ul > li:hover > a > .caret {
+  border-top-color: rgb( 255, 255, 255 );
+}
+
+nav > ul > li > div {
+  /*background-color: rgb( 40, 44, 47 );*/
+  background-color: #808284;
+  border-top: 0;
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.055);
+  display: none;
+  margin: 0;
+  opacity: 0;
+  position: absolute;
+  width: 165px;
+  visibility: hidden;
+
+  -webkit-transiton: opacity 0.2s;
+  -moz-transition: opacity 0.2s;
+  -ms-transition: opacity 0.2s;
+  -o-transition: opacity 0.2s;
+  -transition: opacity 0.2s;
+}
+
+nav > ul > li:hover > div {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+}
+
+nav > ul > li > div ul > li {
+  display: block;
+}
+
+nav > ul > li > div ul > li > a {
+  /*color: #fff;*/
+  color: #e6e7e8;
+  display: block;
+  /*padding: 12px 24px;*/
+  padding: 15px 15px;
+  text-decoration: none;
+}
+
+nav > ul > li > div ul > li:hover > a {
+  background-color: rgba( 255, 255, 255, 0.1);
+  color: #fff;
+}

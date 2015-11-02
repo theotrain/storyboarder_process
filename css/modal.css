@@ -6,10 +6,12 @@
     height: 100%;
     background: #000;
     opacity: 0.75;
+    z-index:100;
     filter: alpha(opacity=75);
 }
 
 #modal {
+    z-index:101;
     position:absolute;
     background:url(../images/tint20.png) 0 0 repeat;
     background:rgba(0,0,0,0.2);
@@ -35,16 +37,20 @@
 #thumb-container-modal {
   position:relative;
   /*background-color: #00ff00;*/
-  width:1000px;
+  width:1040px;
+  /*height: 237px;*/
   /*overflow:auto;*/
-  overflow-x: auto;
+  overflow-x: hidden;
   overflow-y: hidden;
 }
 .thumb-modal {
   margin-right: 20px;
+  margin-bottom: 20px;
   /*background-color: #0000ff;*/
   width: 187px;
   height: 237px;
+  float: left;
+  display: inline-block;
 }
 #thumb-modal-label {
   margin-right: auto;

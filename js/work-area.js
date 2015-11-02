@@ -2,6 +2,8 @@ var canvas;
 var isLoadingImage = false;
 var undoIndex = 0;
 var undoArray = [];
+// var undoVirgin = true;
+// var changeCount = 0;
 var textChanged = false;
 var MAX_UNDO_LEVELS = 15;
 
@@ -55,6 +57,7 @@ $(function(){
       // }
     }
   });
+  $(".loader").css("visibility", "visible");
   loadPageDataToCanvas(pageData);
   setPageButtons();
 })
@@ -74,6 +77,8 @@ function loadPageDataToCanvas(pgData) {
 
 function pageLoadedFromJSON() {
   changeMade();
+  $(".loader").css("visibility", "hidden");
+  console.log("loading animation stopped");
   console.log("PAGE LOADED");
 }
 
@@ -97,6 +102,10 @@ function clearUndoArray() {
 
 function changeMade(s) {
   console.log("------------------change made: " + s);
+  // changeCount += 1;
+  // if (changeCount > 1) { undoVirgin = false };
+  // undoVirgin = false;
+  //console.log("UNDO VIRGIN: " + undoVirgin);
   canvas.renderAll();
 
   //first we need to trim the array to undoIndex so theres nothing after.
@@ -169,6 +178,7 @@ function undo() {
     loadState();
   }
   console.log("UNDO===----->");
+  console.log("UNDO INDEX:" + undoIndex);
   //undoStats();
   setUndoButtons();
 }
@@ -177,6 +187,7 @@ function redo() {
   if (undoIndex < undoArray.length-1) {
     undoIndex += 1;
     loadState();
+    console.log("UNDO INDEX:" + undoIndex);
   }
   //undoStats();
   setUndoButtons();
@@ -344,68 +355,7 @@ function initButtons() {
   });
 
   $( "#save_btn" ).click(function() {
-    var canvasData = canvas.toDatalessJSON();
-    var canvasStr = JSON.stringify(canvasData);
-    console.log("cavasData------------");
-    console.log(canvasData);
-    console.log("JSON.STRINGIFIED canvas data------------");
-    console.log(JSON.stringify(canvasData));
-    //cs = canvasStr.replace(/[\n\r]/g, '<br />');
-    var dataURL = canvas.toDataURL({
-      format: 'jpeg',
-      quality: 0.9,
-      multiplier: 0.25
-    });
-    $.ajax({
-      url: 'save-page.php',
-      //data: JSON.stringify(canvasData),
-      //encodeURIComponent(canvasStr)
-      data: { canvasString: canvasStr, pageID: pageID, imgBase64: dataURL },
-      //dataType: 'text',
-      method: 'POST',
-      success: function() {
-        alert('return from save page and thumbnail');
-      },
-      error: function(xhr, status, error) {
-        //alert('its broke!');
-        //alert(xhr.responseText);
-        //alert(error);
-        console.log("XHR: " + xhr);
-        console.log("status: " + status);
-        console.log("error: " + error);
-        //alert(jQuery.parseJSON(xhr.responseText));
-      }
-    });
-    //save page thumbnail
-    // var dataURL = canvas.toDataURL({
-    //   format: 'png',
-    //   multiplier: 1
-    // });
-    // $.ajax({
-    //   url: 'save-thumbnail.php',
-    //   //data: JSON.stringify(canvasData),
-    //   //encodeURIComponent(canvasStr)
-    //   data: { imgBase64: dataURL, pageID: pageID },
-    //   //dataType: 'text',
-    //   method: 'POST',
-    //   // async: false,
-    //   // cache: false,
-    //   // contentType: false,
-    //   // processData: false,
-    //   success: function() {
-    //     alert('returned from save thumbnail');
-    //   },
-    //   error: function(xhr, status, error) {
-    //     //alert('its broke!');
-    //     //alert(xhr.responseText);
-    //     //alert(error);
-    //     console.log("XHR: " + xhr);
-    //     console.log("status: " + status);
-    //     console.log("error: " + error);
-    //     //alert(jQuery.parseJSON(xhr.responseText));
-    //   }
-    // });
-
+    save();
   });//end save btn click
 
   $( "#page_add_btn" ).click(function() {
@@ -601,6 +551,7 @@ function initTextControls() {
     //cancelText: "cancel",
     showInitial: true,
     showPalette: true,
+    showPaletteOnly: true,
     showSelectionPalette: true,
     maxSelectionSize: 10,
     preferredFormat: "hex",
@@ -629,8 +580,12 @@ function initTextControls() {
     palette: [
       ["rgb(0, 0, 0)", "rgb(67, 67, 67)", "rgb(102, 102, 102)","rgb(127, 127, 127)",
       "rgb(204, 204, 204)", "rgb(217, 217, 217)","rgb(234, 234, 234)","rgb(255, 255, 255)"],
-      ["rgb(152, 0, 0)", "rgb(255, 0, 0)", "rgb(255, 153, 0)", "rgb(255, 255, 0)", "rgb(0, 255, 0)",
-      "rgb(0, 255, 255)", "rgb(74, 134, 232)", "rgb(0, 0, 255)", "rgb(153, 0, 255)", "rgb(255, 0, 255)"]
+      ["rgb(255, 0, 0)", "rgb(255, 153, 0)", "rgb(255, 255, 0)", "rgb(175, 255, 0)", "rgb(0, 255, 0)",
+      "rgb(0, 255, 255)", "rgb(0, 150, 255)", "rgb(0, 0, 255)", "rgb(125, 0, 255)", "rgb(255, 0, 255)"]/*,
+      ["rgb(182, 0, 0)", "rgb(182, 89, 0)", "rgb(181, 182, 0)", "rgb(124, 182, 0)", "rgb(0, 182, 0)",
+      "rgb(0, 181, 182)", "rgb(0, 107, 182)", "rgb(0, 0, 182)", "rgb(153, 0, 255)", "rgb(255, 0, 255)"],
+      ["rgb(255, 145, 145)", "rgb(255, 199, 145)", "rgb(255, 255, 145)", "rgb(220, 255, 145)", "rgb(145, 255, 145)",
+      "rgb(145, 255, 255)", "rgb(145, 210, 255)", "rgb(145, 145, 255)", "rgb(199, 145, 255)", "rgb(255, 145, 255)"]*/
     ]
   }
 
@@ -760,7 +715,57 @@ function pageSelect(dropdown) {
     goToPageIndex(index);
 }
 
+function save(action, idx) {
+  $(".loader").css("visibility", "visible");
+  var canvasData = canvas.toDatalessJSON();
+  var canvasStr = JSON.stringify(canvasData);
+  console.log("cavasData------------");
+  console.log(canvasData);
+  console.log("JSON.STRINGIFIED canvas data------------");
+  console.log(JSON.stringify(canvasData));
+  //cs = canvasStr.replace(/[\n\r]/g, '<br />');
+  var dataURL = canvas.toDataURL({
+    format: 'jpeg',
+    quality: 0.9,
+    multiplier: 0.25
+  });
+  $.ajax({
+    url: 'save-page.php',
+    //data: JSON.stringify(canvasData),
+    //encodeURIComponent(canvasStr)
+    data: { canvasString: canvasStr, pageID: pageID, imgBase64: dataURL },
+    //dataType: 'text',
+    method: 'POST',
+    success: function() {
+      //alert('return from save page and thumbnail');
+      $(".loader").css("visibility", "hidden");
+      if (action == "go") {
+        loadPageIndex(idx);
+      }
+    },
+    error: function(xhr, status, error) {
+      $(".loader").css("visibility", "hidden");
+      alert('Communication error.  Please check connection and try again.');
+      //alert(xhr.responseText);
+      //alert(error);
+      console.log("XHR: " + xhr);
+      console.log("status: " + status);
+      console.log("error: " + error);
+      //alert(jQuery.parseJSON(xhr.responseText));
+    }
+  });
+}
 function goToPageIndex(i) {
+  //save id undoArray
+  if (undoIndex != 0) {
+    save("go", i);
+  } else {
+    loadPageIndex(i);
+  }
+}
+
+function loadPageIndex(i) {
+  $(".loader").css("visibility", "visible");
   pageIDArrayIndex = i;
   var loadPageID = pageIDArray[pageIDArrayIndex];
   //alert("load this page id: " + loadPageID);
@@ -787,9 +792,11 @@ function goToPageIndex(i) {
       //alert('form has been posted successfully');
     },
     error: function(xhr, status, error) {
+      $(".loader").css("visibility", "hidden");
+      alert('Could not load page.  Please check connection and try again.');
       //alert('its broke!');
       //alert(xhr.responseText);
-      alert(error);
+      console.log(error);
       //alert(jQuery.parseJSON(xhr.responseText));
     }
   });
