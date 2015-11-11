@@ -375,7 +375,7 @@ input[disabled].enableIfSelection:hover, input[disabled].enableIfSelection:activ
   margin-left:auto;
   margin-right:0;
 }*/
-.loader {
+#loader {
   position:absolute;
   /*display: inline-block;*/
   top:0px;
@@ -437,7 +437,7 @@ nav ul li {
     transition: all 0.2s; 
 }
   
-nav > ul > li > a > .caret {
+nav > ul > li > span > .caret {
   border-top: 4px solid #e6e7e8;
   border-right: 4px solid transparent;
   border-left: 4px solid transparent;
@@ -452,6 +452,22 @@ nav > ul > li > a > .caret {
   -o-transition: color 0.1s linear;
     transition: color 0.1s linear; 
 }
+
+nav > ul > li > span {
+  /*color: #aaa;*/
+  color: #e6e7e8;
+  display: block;
+  /*line-height: 56px;*/
+  line-height: 30px;
+  padding: 0 24px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+nav > ul > li > span:hover {
+  color: rgb( 255, 255, 255 );
+}
+
 
 nav > ul > li > a {
   /*color: #aaa;*/
@@ -471,7 +487,7 @@ nav > ul > li:hover > a {
   color: rgb( 255, 255, 255 );
 }
 
-nav > ul > li:hover > a > .caret {
+nav > ul > li:hover > span > .caret {
   border-top-color: rgb( 255, 255, 255 );
 }
 
@@ -519,6 +535,11 @@ nav > ul > li > div ul > li > a {
   padding: 15px 15px;
   text-decoration: none;
 }
+nav > ul > li > div ul > li > a:hover {
+  background-color: rgba( 255, 255, 255, 0.1);
+  color: #fff;
+}
+
 
 nav > ul > li > div ul > li:hover {
   background-color: rgba( 255, 255, 255, 0.1);

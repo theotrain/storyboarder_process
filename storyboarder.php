@@ -118,7 +118,7 @@
         <nav>
           <ul>
             <li>
-              <a href="products.html"><?php echo $_SESSION['user_name'] ?><span class="caret"></span></a>
+              <span><?php echo $_SESSION['user_name'] . ' ' ?><span class="caret"></span></span>
               <div>
                 <ul>
                   <!-- <li><a href="index.php?logout">Logout</a></li> -->
@@ -127,7 +127,7 @@
               </div>
             </li>
             <li>
-              <a href="products.html"><?php echo $documentName ?><span class="caret"></span></a>
+              <span><?php echo $documentName . ' ' ?><span class="caret"></span></span>
               <div>
                 <ul>
                   <li><a id='reorder' href='#'>Reorder pages</a></li>
@@ -276,7 +276,7 @@
         <canvas id="c" width="750" height="950">
           fuck yo couch.
         </canvas>
-        <div class="loader" title="7">
+        <div id="loader" title="7">
           <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
              width="24px" height="30px" viewBox="0 0 24 30" style="enable-background:new 0 0 50 50;" xml:space="preserve">
             <rect x="0" y="10" width="4" height="10" fill="#333" opacity="0.2">

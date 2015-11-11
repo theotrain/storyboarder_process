@@ -6,6 +6,7 @@ var undoArray = [];
 // var changeCount = 0;
 var textChanged = false;
 var MAX_UNDO_LEVELS = 15;
+var loaderTimer;
 
 // storyboarder.php sets the below variables:
 // var pageData ---current page graphics data
@@ -57,7 +58,8 @@ $(function(){
       // }
     }
   });
-  $(".loader").css("visibility", "visible");
+  //$(".loader").css("visibility", "visible");
+  showPageLoaderOnDelay();
   loadPageDataToCanvas(pageData);
   setPageButtons();
 })
@@ -77,7 +79,14 @@ function loadPageDataToCanvas(pgData) {
 
 function pageLoadedFromJSON() {
   changeMade();
-  $(".loader").css("visibility", "hidden");
+  //$(".loader").css("visibility", "hidden");
+  hidePageLoader();
+  //console.log("CANVAS.OVERLAYIMAGE: " + canvas.overlayImage);
+  //if (! canvas.overlayImage) {
+    //console.log("WE GoT TO WHERE IT SHOULD REMOVE OVERLAY");
+  // canvas.setOverlayImage(canvas.overlayImage, canvas.renderAll.bind(canvas));
+  //}
+  //canvas.renderAll();
   console.log("loading animation stopped");
   console.log("PAGE LOADED");
 }
@@ -195,6 +204,9 @@ function redo() {
 
 function loadState() {
   var canvasData = JSON.parse(undoArray[undoIndex]);
+  if (! canvasData.hasOwnProperty('overlayImage')) {
+    canvas.setOverlayImage(null, canvas.renderAll.bind(canvas));
+  }
   canvas.loadFromDatalessJSON(canvasData, pageLoadedFromUndoStack); 
 }
 
@@ -711,7 +723,7 @@ function pageSelect(dropdown) {
 }
 
 function save(action, idx) {
-  $(".loader").css("visibility", "visible");
+  showPageLoaderOnDelay();
   var canvasData = canvas.toDatalessJSON();
   var canvasStr = JSON.stringify(canvasData);
   console.log("cavasData------------");
@@ -733,7 +745,7 @@ function save(action, idx) {
     method: 'POST',
     success: function() {
       //alert('return from save page and thumbnail');
-      $(".loader").css("visibility", "hidden");
+      hidePageLoader();
       if (action == "page") {
         loadPageIndex(idx);
       }
@@ -742,7 +754,7 @@ function save(action, idx) {
       }
     },
     error: function(xhr, status, error) {
-      $(".loader").css("visibility", "hidden");
+      hidePageLoader();
       alert('Could not save.  Please check connection and try again.');
       //alert(xhr.responseText);
       //alert(error);
@@ -767,8 +779,26 @@ function goToPageIndex(i) {
   }
 }
 
+function showPageLoaderOnDelay() {
+  //$("#loader").css("visibility", "visible");
+  loaderTimer = setTimeout( showPageLoader, 500 );
+  // $( "#loader" ).fadeIn( "slow", function() {
+  //   // Animation complete
+  // });
+}
+
+function showPageLoader() {
+  $("#loader").css("visibility", "visible");
+}
+
+function hidePageLoader() {
+  clearTimeout(loaderTimer);
+  $("#loader").css("visibility", "hidden");
+}
+
 function loadPageIndex(i) {
-  $(".loader").css("visibility", "visible");
+  //$(".loader").css("visibility", "visible");
+  showPageLoaderOnDelay();
   pageIDArrayIndex = i;
   var loadPageID = pageIDArray[pageIDArrayIndex];
   //alert("load this page id: " + loadPageID);
@@ -788,14 +818,18 @@ function loadPageIndex(i) {
       //var jsonMatch = data.match( /\/\*JSON\[\*\/([\s\S]*?)\/\*\]JSON\*\// );
       //data = JSON.parse( (jsonMatch ? jsonMatch[1] : data).replace(/\n/g,"") );
       //var canvasData = JSON.parse(decodeURIComponent(data));
-      //var canvasData = JSON.parse(data);
-      loadPageDataToCanvas(JSON.parse(data));
+      var canvasData = JSON.parse(data);
+      //console.log("LOADING PAGE DATA OVERLAY: " + canvasData.overlayImage.src);
+      if (! canvasData.hasOwnProperty('overlayImage')) {
+        canvas.setOverlayImage(null, canvas.renderAll.bind(canvas));
+      }
+      loadPageDataToCanvas(canvasData);
       //var canvasData = data;
       //canvas.loadFromDatalessJSON(canvasData, pageLoadedFromJSON)
       //alert('form has been posted successfully');
     },
     error: function(xhr, status, error) {
-      $(".loader").css("visibility", "hidden");
+      hidePageLoader();
       alert('Could not load page.  Please check connection and try again.');
       //alert('its broke!');
       //alert(xhr.responseText);
@@ -818,7 +852,13 @@ function openSaveDialog(link) {
 
 function loadOverlay(url) {
   //canvas.setOverlayImage(image url, optional callback method);
-  canvas.setOverlayImage(url, canvas.renderAll.bind(canvas));
+  canvas.setOverlayImage(url, overlayAddComplete);
+
+}
+
+function overlayAddComplete() {
+  canvas.renderAll.bind(canvas);
+  changeMade();
 }
 
 
