@@ -7,14 +7,24 @@
   }
 ?>
 <?php
-  $query = "SELECT id FROM books WHERE id = '$_GET[id]' AND user_id = '$_SESSION[user_id]'";
+  $query = "SELECT name, id FROM books WHERE id = '$_GET[id]' AND user_id = '$_SESSION[user_id]'";
   $user_owns_book = $mysqli->query($query);
   if(mysqli_num_rows($user_owns_book)==0){
     $gtfo = true;
   }
+  while($row = $user_owns_book->fetch_array()) {
+    $documentName = $row['name'];
+  }
   if ($gtfo) {
     header('Location: index.php') ;
     exit;
+  }
+?>
+<?php
+  $query = "SELECT url FROM overlays ORDER BY display_order";
+  $overlay_records = $mysqli->query($query);
+  while($row = $overlay_records->fetch_array()) {
+    $overlays[] = $row['url'];
   }
 ?>
 <?php
@@ -73,7 +83,7 @@
     <link rel="stylesheet" href="css/spectrum.css" />
     <link rel="stylesheet" type="text/css" href="css/mystyle.css">
     <link rel="stylesheet" type="text/css" href="css/modal.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"> -->
 
     <script src="js/spectrum.js"></script>
     <!-- 
@@ -104,22 +114,26 @@
     
     <div id="nav-top-full-width">
       <div class="nav-top">  
+        <span id="title">STORYBOARDER</span>
         <nav>
           <ul>
             <li>
               <a href="products.html"><?php echo $_SESSION['user_name'] ?><span class="caret"></span></a>
               <div>
                 <ul>
-                  <li><a href="index.php?logout">Logout</a></li>
+                  <!-- <li><a href="index.php?logout">Logout</a></li> -->
+                  <li><span onClick="openSaveDialog('index.php?logout');">Logout</span></li>
                 </ul>
               </div>
             </li>
             <li>
-              <a href="products.html">Document <span class="caret"></span></a>
+              <a href="products.html"><?php echo $documentName ?><span class="caret"></span></a>
               <div>
                 <ul>
                   <li><a id='reorder' href='#'>Reorder pages</a></li>
-                  <li><a id='reorder' href='#'>Switch / New Document</a></li>
+                  <!-- <li><a href='index.php'>Switch / New Document</a></li> -->
+                  <li><span onClick="openSaveDialog('index.php');">Switch Book</span></li>
+                  <li><span onClick="openSaveDialog('index.php');">New Book</span></li>
                 </ul>
               </div>
             </li>
@@ -236,6 +250,25 @@
             ?>
           </ul>
         </div>
+
+        <div id="overlays">
+          <?php foreach ($overlays as $overlay_url) { ?>
+          <span id="overlay-item">
+            <img src=<?php echo $overlay_url ?> onClick="loadOverlay('<?php echo $overlay_url ?>');" height="80">
+          </span>
+          <?php } ?>
+
+
+          <!-- <span id="overlay-item">
+            <img src="overlays/overlay1.png" onClick="loadOverlay('overlays/overlay1.png');" height="80">
+          </span>
+          <span id="overlay-item">
+            <img src="overlays/overlay2.png" onClick="loadOverlay('overlays/overlay2.png');" height="80">
+          </span>
+          <span id="overlay-item">
+            <img src="overlays/overlay0.png" onClick="loadOverlay('overlays/overlay0.png');" height="80">
+          </span> -->
+        </div>
         
       </div>
       <div id="canvasBox">
@@ -267,7 +300,9 @@
 
     </div>
 
-
+    <div id="dialog-confirm" title="Save changes?">
+      <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Save changes before leaving page?</p>
+    </div>
 
 
 

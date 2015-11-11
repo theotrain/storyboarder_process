@@ -256,30 +256,25 @@ function initButtons() {
     console.log('selection cleared');
   });
 
-  // $( "#move_to_top_btn" ).click(function() {
-  //   if (canvas.getActiveGroup()) {
-  //     //canvas.getActiveGroup().bringToFront();
-  //     for(var i = 0; i < canvas.getActiveGroup().size(); i++) {
-  //       console.log("moving group item: " + i + ":   " + canvas.getActiveGroup().item(i));
-  //       var obj = canvas.getActiveGroup().item(i);
-  //       obj.bringToFront();
-  //     }
-  //     //canvas.getObjects().pop();
-      
-  //     console.log("move to top with group selected");
-  //   } else {
-  //     canvas.getActiveObject().bringToFront();
-  //     console.log("move to top with 1 object selected");
-  //   }
-  // });
+  //jquery UI dialog box
+  $( "#dialog-confirm" ).dialog({
+      resizable: false,
+      autoOpen: false,
+      show: { effect: "slideDown", duration: 300 },
+      height:140,
+      modal: true,
+      buttons: {
+        "Save": function() {
+          $( this ).dialog( "close" );
+          save("link", $("#dialog-confirm").data("link"));
+        },
+        "Don't Save": function() {
+          $( this ).dialog( "close" );
+          window.location.href = $( "#dialog-confirm" ).data("link");
+        }
+      }
+    });
 
-  // $( "#move_to_bottom_btn" ).click(function() {
-  //   if (canvas.getActiveGroup()) {
-  //     canvas.getActiveGroup().sendToBack();
-  //   } else {
-  //     canvas.getActiveObject().sendToBack();
-  //   }
-  // });
   $( "#undo_btn" ).click(function() {
     undo();
   });
@@ -739,13 +734,16 @@ function save(action, idx) {
     success: function() {
       //alert('return from save page and thumbnail');
       $(".loader").css("visibility", "hidden");
-      if (action == "go") {
+      if (action == "page") {
         loadPageIndex(idx);
+      }
+      if (action == "link") {
+        window.location.href = idx;
       }
     },
     error: function(xhr, status, error) {
       $(".loader").css("visibility", "hidden");
-      alert('Communication error.  Please check connection and try again.');
+      alert('Could not save.  Please check connection and try again.');
       //alert(xhr.responseText);
       //alert(error);
       console.log("XHR: " + xhr);
@@ -755,10 +753,15 @@ function save(action, idx) {
     }
   });
 }
+function pageHasChanges() {
+  return undoIndex != 0
+}
+
+
 function goToPageIndex(i) {
   //save id undoArray
-  if (undoIndex != 0) {
-    save("go", i);
+  if (pageHasChanges()) {
+    save("page", i);
   } else {
     loadPageIndex(i);
   }
@@ -803,9 +806,21 @@ function loadPageIndex(i) {
 
 }
 
-// function jsonEscape(str)  {
-//     return str.replace(/\n/g, "\\\\n").replace(/\r/g, "\\\\r").replace(/\t/g, "\\\\t");
-// }
+function openSaveDialog(link) {
+  if (pageHasChanges()) {
+    $("#dialog-confirm").data("link", link);
+    $("#dialog-confirm").dialog("open");
+  } else {
+    window.location.href = link;
+  }
+  
+}
+
+function loadOverlay(url) {
+  //canvas.setOverlayImage(image url, optional callback method);
+  canvas.setOverlayImage(url, canvas.renderAll.bind(canvas));
+}
+
 
 
 

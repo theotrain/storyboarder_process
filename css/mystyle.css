@@ -49,6 +49,7 @@ body {
 }
 .ui-tabs .ui-tabs-nav .ui-tabs-anchor {
   padding: .2em .7em;
+  font-size: .8em;
 }
 .ui-tabs .ui-tabs-panel {
   padding: 4px;
@@ -79,13 +80,13 @@ body {
 }
 #sidebar {
   display: inline-block;
-  width:248px;
+  width:257px;
   /*float:left;
   width:248px;
   display: inline-block;*/
   /*float:right;
   width:248px;*/
-  /*background:#00f;*/
+  /*background-color:#00f;*/
   /*display: inline-block;
   margin-right:22px;*/
   position: relative;
@@ -122,9 +123,11 @@ body {
   display: inline-block;
   position: relative;
   vertical-align: top;
-  margin-left: 19px;
+  margin-left: 10px;
+  /*border: 1px solid black;*/
 }
 #c {
+  border: 1px solid #aaaaaa;
   /*background-color: #efe;*/
   /*display: inline-block;*/
   /*display: inline-block;
@@ -389,7 +392,16 @@ svg rect{
 }
 
 /*nav*/
-
+#title {
+  /*color: #e6e7e8;*/
+  color: #b6b7b8;
+  font-size: 1em;
+  letter-spacing: .2em;
+  padding: 14px 0px;
+  vertical-align: middle;
+  display: block;
+  float:left;
+}
 nav {
   /*background-color: #fff;*/
   /*border: 1px solid #dedede;*/
@@ -493,16 +505,50 @@ nav > ul > li > div ul > li {
   display: block;
 }
 
-nav > ul > li > div ul > li > a {
-  /*color: #fff;*/
+nav > ul > li > div ul > li > span{
   color: #e6e7e8;
   display: block;
-  /*padding: 12px 24px;*/
+  padding: 15px 15px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+nav > ul > li > div ul > li > a {
+  color: #e6e7e8;
+  display: block;
   padding: 15px 15px;
   text-decoration: none;
 }
 
-nav > ul > li > div ul > li:hover > a {
+nav > ul > li > div ul > li:hover {
   background-color: rgba( 255, 255, 255, 0.1);
   color: #fff;
+}
+
+nav > ul > li > div ul > li:hover > span {
+  background-color: rgba( 255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.ui-dialog {
+  font-size:14px;
+}
+
+#overlays {
+  border: 1px solid #aaaaaa;
+  margin-top: 13px;
+  padding: 4px;
+  background-color: #fff;
+  height: 200px;
+  overflow-y: auto;
+}
+#overlay-item {
+  margin-left: 7px;
+  margin-top: 11px;
+  background-color: #fff;
+  display: inline-block;
+  border: 1px solid #aaaaaa;
+ /* -webkit-box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.26);
+  -moz-box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.26);
+  box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.26);*/
 }
