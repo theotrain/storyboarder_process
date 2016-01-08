@@ -98,6 +98,7 @@ body {
   width: 241px;
   padding: 7px;
   margin-bottom: 15px;
+  border: 1px solid #aaaaaa;
 }
 .textEditRow{
   /*margin-top: 11px;*/
@@ -141,10 +142,11 @@ body {
   /*margin-left: 270px;*/
 }
 #textArea {
-  position: relative
+  position: relative;
   /*background-color: #9999ff;*/
   width: 100%;
 }
+
 #main {
   float:right;
   width:750px;
@@ -278,13 +280,13 @@ button:disabled {opacity:0.5;}
   /*margin-top: 9px;*/
   border: 0px;
   /*padding: 0px;*/
-  background-color: #ff8888;
+  /*background-color: #ff8888;*/
 }
 .square_btn { 
   margin-top: 9px;
   height: 32px;
   width: 32px;
-  background-color: #ff33ff;
+  /*background-color: #ff33ff;*/
 }
 .long_btn {
   height: 32px;
@@ -296,10 +298,10 @@ input[disabled].enableIfSelection:hover, input[disabled].enableIfSelection:activ
   opacity: 0.5;
 }
 #undo_btn {
-  background: url("../images/undo.png") no-repeat;
+  /*background: url("../images/undo.png") no-repeat;*/
 }
 #redo_btn {
-  background: url("../images/redo.png") no-repeat;
+  /*background: url("../images/redo.png") no-repeat;*/
 }
 #move_up_btn {
   background: url("../images/shape_move_forwards.png") no-repeat;
@@ -324,10 +326,10 @@ input[disabled].enableIfSelection:hover, input[disabled].enableIfSelection:activ
 }
 
 #delete_btn {
-  background: url("../images/cross.png") no-repeat;
+  /*background: url("../images/cross.png") no-repeat;*/
 }
 #add_text_btn {
-  background: url("../images/button-add-text.png") no-repeat;
+  /*background: url("../images/button-add-text.png") no-repeat;*/
 }
 
 #text_align_left_btn {
@@ -340,7 +342,7 @@ input[disabled].enableIfSelection:hover, input[disabled].enableIfSelection:activ
   background: url("../images/text_align_right.png") no-repeat;
 }
 #save_btn {
-  background: url("../images/diskette.png") no-repeat;
+  /*background: url("../images/diskette.png") no-repeat;*/
 }
 #import_data_btn {
   background: url("../images/shape_handles.png") no-repeat;

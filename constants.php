@@ -12,6 +12,6 @@ define("DB_PASS", "root");
 // define("DB_PASS", "mr5QWWIbnj");
 
 define("DB_NAME", "storyboarder");
-define("ASSET_PATH", "assets/")
+//define("ASSET_PATH", "assets/");
 
 ?>

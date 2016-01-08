@@ -1,5 +1,5 @@
 //var imageArray = [];
-var asset_path = "assets/";
+//var asset_path = "assets/";
 // var resizeOpts = { 
 //     handles: "all",
 //     // containment: "#dropHere",
@@ -31,7 +31,8 @@ function setup_drag_drop_thumbs() {
       console.log("drop function");
       if (ui.draggable.hasClass("dragImg")) {
         console.log("thumbnail dropped in main");
-        var imageSrc = asset_path + ui.draggable.attr('filename');
+        //var imageSrc = asset_path + ui.draggable.attr('filename');
+        var imageSrc = ui.draggable.attr('filename');
 
         var offset = $("#c").offset();
         dropX = (e.pageX - offset.left);

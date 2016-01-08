@@ -1,1 +1,3 @@
 storyboarded resources php-login-minimal
+Setup · blueimp/jQuery-File-Upload Wiki
+fabric js

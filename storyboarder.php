@@ -64,10 +64,14 @@
 
     <script src="js/jquery-1.11.2.min.js"></script>
     <script src="js/tools.js"></script>
+    <script src="js/constants.js"></script>
     <script src="js/drag-drop-resize.js"></script>
     <script src="js/tabs.js"></script>
     <script src="js/work-area.js"></script>
     <script src="js/modal.js"></script>
+
+    <!--<script src="js/jquery.getimagedata.min.js"></script>-->
+    
 
     <script src="lib/easeljs-0.8.1.min.js"></script>
     <script src="lib/preloadjs-0.6.1.min.js"></script>
@@ -76,13 +80,19 @@
     <script src="js/jquery-ui-custom/external/jquery/jquery.js"></script>
     <script src="js/jquery-ui-custom/jquery-ui.js"></script>
 
+    <link rel="stylesheet" type="text/css" href="css/load_fonts.css">
     <link href="js/jquery-ui-custom/jquery-ui.css" rel="stylesheet">
     
+    <link rel="stylesheet" href="font-awesome-4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="css/resize.css">
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" href="css/spectrum.css" />
     <link rel="stylesheet" type="text/css" href="css/mystyle.css">
     <link rel="stylesheet" type="text/css" href="css/modal.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-progress.css">
+   <!--  <link rel="stylesheet" type="text/css" href="css/bootstrap-input-button.css"> -->
+
+    <link rel="stylesheet" href="css/jquery.fileupload-ui.css">
     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"> -->
 
     <script src="js/spectrum.js"></script>
@@ -111,8 +121,22 @@
 
   </head>
   <body>
-    
+    <!-- <div class="font_preload" style="opacity: 0">
+      <span style="font-family: 'Anime Ace';"></span>
+      <span style="font-family: 'Droid Sans Mono';"></span>
+    </div> -->
+
+    <div id="progress" class="progress">
+        <div class="progress-bar progress-bar-success"></div>
+    </div>
+
     <div id="nav-top-full-width">
+    <!-- The global progress bar -->
+    <!-- <div id="progress" class="progress">
+        <div class="progress-bar progress-bar-success"></div>
+    </div> -->
+
+
       <div class="nav-top">  
         <span id="title">STORYBOARDER</span>
         <nav>
@@ -144,11 +168,14 @@
     <div id="nav-bottom-full-width">
       <div class="nav-bottom">
         <span id="button-group">
-          <button id="save_btn" class="enableIfNoSelection square_btn nav_bottom_btn" title="Save Page" type="button"></button>
+          <!-- <button id="save_btn" class="enableIfNoSelection square_btn nav_bottom_btn" title="Save Page" type="button"></button> -->
+          <i id="save_btn" class="fa fa-download fa-2x"></i>
         </span>
         <span id="button-group">
-          <button id="undo_btn" class="enableIfUndo square_btn nav_bottom_btn" title="Undo (affects current page only)" type="button"></button>
-          <button id="redo_btn" class="enableIfRedo square_btn nav_bottom_btn" title="Redo (affects current page only)" type="button"></button>
+          <!-- <button id="undo_btn" class="enableIfUndo square_btn nav_bottom_btn" title="Undo (affects current page only)" type="button"></button> -->
+          <i id="undo_btn" class="fa fa-rotate-left fa-2x enableIfUndo square_btn nav_bottom_btn" title="Undo (affects current page only)"></i>
+          <!-- <button id="redo_btn" class="enableIfRedo square_btn nav_bottom_btn" title="Redo (affects current page only)" type="button"></button> -->
+          <i id="redo_btn" class="fa fa-rotate-right fa-2x enableIfRedo square_btn nav_bottom_btn" title="Redo (affects current page only)"></i>
         </span> 
         <span id="button-group">
           <button id="move_up_btn" class="enableIfSelection square_btn nav_bottom_btn" title="Move up display order" type="button"></button>
@@ -166,12 +193,13 @@
           <button id="move_to_bottom_btn" class="enableIfSelection square_btn nav_bottom_btn" title="Move to bottom" type="button"></button>
         </span> -->
         <span id="button-group">
-          <button id="delete_btn" class="enableIfGroupSelection square_btn nav_bottom_btn" title="Delete selection" type="button"></button>
+          <!-- <button id="delete_btn" class="enableIfGroupSelection square_btn nav_bottom_btn" title="Delete selection" type="button"></button> -->
+          <i id="delete_btn" class="fa fa-close fa-2x enableIfGroupSelection square_btn nav_bottom_btn" title="Delete selection"></i>
         </span>
         <span id="button-group">
-          <button id="add_text_btn" class="enableIfNoSelection long_btn nav_bottom_btn" title="Add text to page" type="button"></button>
-          <!-- <button id="save_btn" class="enableIfNoSelection long_btn nav_bottom_btn" title="EXPORT DATA" type="button"></button> -->
-          <button id="import_data_btn" class="enableIfNoSelection long_btn nav_bottom_btn" title="IMPORT DATA" type="button"></button>
+          <!-- <button id="add_text_btn" class="enableIfNoSelection long_btn nav_bottom_btn" title="Add text to page" type="button"></button> -->
+          <i id="add_text_btn" class="fa fa-font fa-2x enableIfNoSelection square_btn nav_bottom_btn" title="Add text to page"></i>
+          <!-- <button id="import_data_btn" class="enableIfNoSelection long_btn nav_bottom_btn" title="IMPORT DATA" type="button"></button> -->
         </span>
 
         <span id="button-group">
@@ -213,7 +241,14 @@
     <div id="wrap">
 
       <div id="sidebar">
-        <!-- these are the text editing options that are hidden by default -->
+        <!-- progress box appears only when upload in progress -->
+       <!--  <div class="progressBox"> -->
+          <!-- <div id="progress" class="progress">
+              <div class="progress-bar progress-bar-success"></div>
+          </div>
+          <span id="progressText"></span>
+        </div> -->
+        <!-- these are the text editing options that are appear when text is selected -->
         <div class="textEdit">
           <div class="textEditRow">
             <button id="text_align_left_btn" class="square_btn text_edit_btn" title="Align text left" type="button"></button>
@@ -224,6 +259,8 @@
           <div class="textEditRowColors">
             <!-- <input type="text" id="text_back" class="color_picker" /> -->
             <select name="fonts" id="fonts" onchange="changeFont()">
+              <option value="Anime Ace">Anime Ace</option>
+              <option value="Droid Sans Mono">Droid</option>
               <option value="Arial">Arial</option>
               <option value="Comic Sans MS">Comic Sans MS</option>
               <option value="Courier New">Courier New</option>
@@ -240,6 +277,9 @@
             </select>
           </div> -->
         </div> <!-- end textEdit -->
+
+        <!-- <input id="fileupload" type="file" name="files[]" data-url="my_assets" multiple> -->
+        <input id="fileupload" type="file" value="what" name="files[]" style="margin: 0 0 10 0" data-url="server/php/" multiple>
 
         <div id="tabs">
           <ul>
@@ -303,7 +343,102 @@
     <div id="dialog-confirm" title="Save changes?">
       <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Save changes before leaving page?</p>
     </div>
+    <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> -->
+    <!-- <script src="js/vendor/jquery.ui.widget.js"></script> -->
+    <script src="js/load-image.all.min.js"></script>
+    <!-- The Canvas to Blob plugin is included for image resizing functionality -->
+    <script src="js/canvas-to-blob.min.js"></script>
+    <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
 
+    <script src="js/vendor/jquery.ui.widget.js"></script>
+    <script src="js/jquery.iframe-transport.js"></script>
+    
+    <script src="js/jquery.fileupload.js"></script>
+    <script src="js/jquery.fileupload-process.js"></script>
+    <script src="js/jquery.fileupload-image.js"></script>
+    <script>
+
+    $(document).bind('drop dragover', function (e) {
+        // Prevent the default browser drop action:
+        e.preventDefault();
+    });
+
+    $(function () {
+        // $( "#tabs" ).tabs({ active: 0 });
+        $('#fileupload').fileupload({
+            dataType: 'json',
+            // previewMinWidth: 105,
+            // previewMinHeight: 105,
+            disableExifThumbnail: true,
+            previewThumbnail: false,
+            // disableImageResize: /Android(?!.*Chrome)|Opera/
+            //   .test(window.navigator.userAgent),
+            // imageForceResize: true,
+            // imageMaxWidth: 300,
+            // imageMaxHeight: 300,
+            // imageCrop: true, // Force cropped images
+            // previewMinWidth: 105,
+            // previewMinHeight: 105,
+            // 'option',
+            // {
+            //     previewMaxWidth: 105,
+            //     previewMaxHeight: 105
+            // }
+            //previewMaxWidth: 105,
+            //previewMaxHeight: 105,
+            done: function (e, data) {
+                $('.progress').css(
+                    'visibility',
+                    'hidden'
+                );
+                // opens library tab at index 5, "My Assets"
+                // $( "#tabs" ).tabs({ active: 5 });
+                $.each(data.result.files, function (index, file) {
+                  console.log("FINISHED UPLOAD");
+                  console.log("index" + index);
+                  console.log("file" + file);
+                  writeUploadedFileToDB(urlToFilename(file.url), urlToFilename(file.thumbnailUrl));
+                  // writeUploadedFileToDB("image,jpg", "thumbnail.jpg");
+                  
+                  // file properties
+                  // name _RED7481_web.jpg
+                  // size 175864
+                  // type image/jpeg
+                  // url http://localhost:8888/storyboarder/server/php/files/_RED7481_web.jpg
+                  // thumbnailUrl http://localhost:8888/storyboarder/server/php/files/thumbnail/_RED7481_web.jpg
+                    // $('<p/>').text(file.name).appendTo(document.body);
+                    // $("#progressText").text("Uploaded" + file.name);
+                    //$('<p/>').text(file.name).appendTo('#files');
+                //     $('#progress .progress-bar').css(
+                //     'width',
+                //     '0'
+                // );
+                });
+            },
+            start: function () {
+                // $(".progress").show();
+                $('.progress').css(
+                    'visibility',
+                    'visible'
+                );
+            },
+            progressall: function (e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                $('#progress .progress-bar').css(
+                    'width',
+                    progress + '%'
+                );
+            }
+        });
+    });
+
+    function urlToFilename(url) {
+      console.log("URL: " + url)
+      var toArray = url.split("/");
+      return toArray[toArray.length-1];
+    }
+    </script>
+    
 
 
   </body>

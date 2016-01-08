@@ -23,7 +23,8 @@ while($row = $result->fetch_assoc()) {
   // echo '<div id="thumb" class="dragImg">';
   // echo '<img class="img" src="'.ASSET_PATH.filename_to_thumbnail($row['filename']).'">';
   echo '<div id="thumb">';
-  echo '<img class="dragImg" filename="'.$row['filename'].'" title="'.$row['description'].'" src="'.ASSET_PATH.$row['thumbnail'].'">';
+  echo '<img class="dragImg" filename="'.$row['filename'].'" title="'.$row['description'].'" src="'.$row['thumbnail'].'">';
+  // echo '<img class="dragImg" filename="'.$row['filename'].'" title="'.$row['description'].'" src="'.ASSET_PATH.$row['thumbnail'].'">';
   echo '</div>';
 }
 

@@ -23,6 +23,7 @@ $(function(){
   // canvas.centeredRotation = true;
   canvas.perPixelTargetFind = true;
   //canvas.preserveObjectStacking = true;
+  preloadFonts();
   initButtons();
   initTextControls();
   disableTextEditor();
@@ -63,6 +64,23 @@ $(function(){
   loadPageDataToCanvas(pageData);
   setPageButtons();
 })
+
+function preloadFonts() {
+  var text1 = new fabric.Text("junk", { 
+    fontFamily: "Anime Ace", 
+    visible: false 
+  });
+  var text2 = new fabric.Text("junk", { 
+    fontFamily: "Droid Sans Mono", 
+    visible: false 
+  });
+  canvas.add(text1);
+  canvas.add(text2);
+  canvas.renderAll(); 
+  canvas.remove(text1);
+  canvas.remove(text2);
+  canvas.renderAll(); 
+}
 
 function loadPageDataToCanvas(pgData) {
   //var canvasData = pageData;
@@ -621,8 +639,10 @@ function rewritePageSelectOptions() {
 function changeFont() {
   console.log("value of fonts: " + $("#fonts")[0].value);
   canvas.getActiveObject().fontFamily = $("#fonts")[0].value;
-  changeMade();
+  // canvas.getActiveObject().visible = false
+  // canvas.getActiveObject().visible = true
   canvas.renderAll();
+  changeMade();
 }
 
 function outputObjects() {
@@ -636,6 +656,21 @@ function outputObjects() {
 function disable_btn(objectArray, bool) {
   for(var i = 0; i < objectArray.length; i++) {
     objectArray[i].disabled = bool;
+  }
+}
+
+function scaleDimension(dimension) {
+  // dimension is a height or width, number to scale down by
+  if (dimension > 2400) {
+      return 1/6;
+  } else if (dimension > 1600) {
+      return 1/5;
+  } else if (dimension > 800) {
+      return 1/3;
+  } else if (dimension > 500) {
+      return 1/2;
+  } else {
+    return 1;
   }
 }
 
@@ -668,7 +703,19 @@ function addImageFromUrl(url, x, y) {
     }, 50);
 
     fabric.Image.fromURL(url, function(img) {
-      img.scale(0.5);
+      console.log("ADDING IMAGE FROM URL");
+      console.log("WIDTH: " + img.getWidth())
+      console.log("HEIGHT: " + img.getHeight())
+      
+      // if (img.getWidth() > 18) {
+      //     greeting = "Good day";
+      // } else {
+      //     greeting = "Good evening";
+      // }
+
+      // scale down large images
+      var scaleTo = img.getWidth() > img.getHeight() ? scaleDimension(img.getWidth()) : scaleDimension(img.getHeight());
+      img.scale(scaleTo);
       imgX = img.getCenterPoint().x;
       imgY = img.getCenterPoint().y;
       offsetX = x - imgX;
@@ -861,6 +908,35 @@ function overlayAddComplete() {
   changeMade();
 }
 
+function writeUploadedFileToDB(imageFilename, thumbnailFilename) {
+  var imageUrl = MY_ASSETS_PATH + imageFilename;
+  var thumbnailUrl = MY_ASSETS_THUMBNAIL_PATH + thumbnailFilename;
+
+  console.log("sending1: " + imageUrl + "sending2: " + thumbnailUrl);
+  $.ajax({
+    url: 'write-uploaded-image-to-db.php',
+    // data: { canvasString: canvasStr, pageID: pageID, imgBase64: dataURL },
+    data: { imageUrl: imageUrl, thumbnailUrl: thumbnailUrl },
+    //data: "",
+    method: 'POST',
+    dataType: 'text',
+    success: function(data) {
+      //var canvasData = data[0];
+      console.log("IMAGE DATA UPLOADED TO DB: " + data);
+      $( "#tabs" ).tabs({ active: 5 });
+      $( "#tabs" ).tabs( "load", 5 );
+
+      //console.log("DATA DECODED: " + decodeURIComponent(data));
+    },
+    error: function(xhr, status, error) {
+      alert('Could not save image data.  Please check connection and try again.');
+      //alert('its broke!');
+      console.log(xhr.responseText);
+      console.log(error);
+      //alert(jQuery.parseJSON(xhr.responseText));
+    }
+  });
+}
 
 
 
